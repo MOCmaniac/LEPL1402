@@ -54,7 +54,7 @@ public class StringUtils {
         char[] s1 = str.toCharArray();
         int diff = 'a' - 'A';
 
-        for (int i=0; i < s1.length; i++) {
+        for (int i=0; i < s1.length / 2 ; i++) {
             if (s1[i] >= 'A' && s1[i] <= 'Z') {
                 s1[i] += diff;
             }
