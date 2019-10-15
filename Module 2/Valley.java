@@ -30,7 +30,7 @@ public class Valley {
      * je suis face à un sommet, si il est négatif, je suis dans une vallée.
      *
      * Après plus qu'a updater ma valeur dans "biggestValleyMountain"
-     * 
+     *
      * Ceci est MA solution, vous pouvez avoir une autre méthode tout aussi bien et plus !
      *
      */
@@ -84,5 +84,30 @@ public class Valley {
         }
 
         return biggestValleyMountain;
+    }
+
+	// Solution by Bruno.
+	// This works by storing the amount of consecutive equal values, from left and from right.
+	// The depth/height if the slope changes from between positions `i` and `i+1` is `min(leftCount[i], rightCount[i+1])`.
+	public static int[] valleyBruno(int[] array) {
+        int n = array.length;
+        int[] leftCount = new int[n], rightCount = new int[n];
+        leftCount[0] = 1;
+        rightCount[n - 1] = 1;
+        for (int i = 1; i < n; ++i) {
+            leftCount[i] = array[i] == array[i - 1] ? leftCount[i - 1] + 1 : 1;
+        }
+        for (int i = n - 1; i > 0; --i) {
+            rightCount[i - 1] = array[i - 1] == array[i] ? rightCount[i] + 1 : 1;
+        }
+        int[] ans = new int[]{0, 0};
+        for (int i = 0; i < n - 1; ++i) {
+            if (array[i] != array[i + 1]) {
+                int y = Math.min(leftCount[i], rightCount[i + 1]);
+                int index = array[i] == -1 ? 0 : 1;
+                ans[index] = Math.max(ans[index], y);
+            }
+        }
+        return ans;
     }
 }
