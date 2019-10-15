@@ -69,7 +69,7 @@ public class StringUtils {
      */
     public static boolean palindrome(String str) {
         int l = str.length();
-        for (int x = 0; x < l; x++) {
+        for (int x = 0; x < l / 2; x++) {
             if (str.charAt(x) != str.charAt(l - 1 - x)) {
                 return false;
             }
