@@ -89,7 +89,7 @@ public class Valley {
 	// Solution by Bruno.
 	// This works by storing the amount of consecutive equal values, from left and from right.
 	// The depth/height if the slope changes from between positions `i` and `i+1` is `min(leftCount[i], rightCount[i+1])`.
-	public static int[] valley(int[] array) {
+	public static int[] valleyBruno(int[] array) {
         int n = array.length;
         int[] leftCount = new int[n], rightCount = new int[n];
         leftCount[0] = 1;
