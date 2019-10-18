@@ -34,9 +34,11 @@ public class MyQueue<E> {
         while (!s1.empty()) {
             s2.push(s1.pop());
         }
-        elem =  s2.pop();
+        elem = s2.pop();
         if(!s2.empty()) {
             front = s2.peek();
+        } else {
+            front = null;
         }
         while(!s2.empty()){
             s1.push(s2.pop());
@@ -54,5 +56,4 @@ public class MyQueue<E> {
     public boolean empty() {
         return s1.empty();
     }
-
 }
