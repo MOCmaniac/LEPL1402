@@ -1,41 +1,42 @@
 import java.util.Arrays;
 
-public class MergeSortBetter {
+public class MergeSort {
     // https://en.wikipedia.org/wiki/Merge_sort
     // https://www.geeksforgeeks.org/merge-sort/
 
-    // This code uses the sort method from "MergeSortBetter" from the slides
-    // and my merge method (pretty similar with the one in the slides)
-
     // Theses methods work with the given tests but don't work on inginious...
 
-    // /!\ If your code works on inginious and you want to share it send me a PM !
-
-    private static final boolean ANALYZE = false; // Set to true if you want to see what the algorithm does
+    private static final boolean ANALYZE = true; // Set to true if you want to see what the algorithm does
 
     public static void main(String[] args) {
-        int[] a = new int[]{22, 49, -82, 23, -16, 18, 86, -56, 5, -4, 15, 23};
-        System.out.println("Before sort :\n" + Arrays.toString(a) + "\n");
-        sort(a);
-        System.out.println("\nAfter sort :\n" + Arrays.toString(a));
+        int[][] testArrays = new int[5][];
+        testArrays[0] = new int[]{0};
+        testArrays[1] = new int[]{1, 0};
+        testArrays[2] = new int[]{2, 0, 1};
+        testArrays[3] = new int[]{3, 5, 6, 7, 1, 2, 8, 4, 0};
+        testArrays[4] = new int[]{7, 3, 0, 6, 4, 9, 1, 2, 5, 8};
+        for (int[] i : testArrays) {
+            sort(i);
+        }
     }
+
     /**
-     * Merge the array from lo to mid-1 with array from mid to hi-1
+     * Pre-conditions: a[lo..mid] and a[mid+1..hi] are sorted
+     * Post-conditions: a[lo..hi] is sorted
      */
     private static void merge(int[] a, int[] aux, int lo, int mid, int hi) {
-        if(ANALYZE) {
-            System.out.print(" -> ");
+        if(ANALYZE){
+            System.out.print("-> ");
             printSubArray(a, lo, mid);
             System.out.print(" & ");
-            printSubArray(a, mid, hi);
+            printSubArray(a, mid + 1, hi);
+            System.out.print(" => ");
         }
-
         int low1 = lo;
-        int low2 = mid;
+        int low2 = mid + 1;
         int iter = 0;
-
         while (iter < aux.length) {
-            if (low2 >= hi || (a[low1] < a[low2] && low1 < mid)) {
+            if (low2 > hi || (a[low1] < a[low2] && low1 <= mid)) {
                 aux[iter] = a[low1];
                 low1++;
             } else {
@@ -44,62 +45,48 @@ public class MergeSortBetter {
             }
             iter++;
         }
+        if(ANALYZE) System.out.println(Arrays.toString(aux));
 
-        // copy b into a
-        int l = lo; // Start at the right place in a
-        for (int n : aux) {
-            a[l] = n;
-            l++;
-        }
-
-        if(ANALYZE) {
-            System.out.print(" => ");
-            System.out.println(Arrays.toString(aux));
-        }
+        System.arraycopy(aux, 0, a, lo, hi - lo + 1);
     }
 
     /**
-     * Split the array and call merge
+     * Rearranges the array in ascending order, using the natural order
      */
     public static void sort(int[] a) {
-        mergeSort(0, a.length, a);
+        System.out.println("Initial : " + Arrays.toString(a));
+        mergeSort(a, 0, a.length - 1);
+        System.out.println("Result : " + Arrays.toString(a) + "\n");
     }
 
-    public static void mergeSort(int from, int to, int[] a) {
-        if (from + 1 == to) //size 1 is always sorted
-            return;
-        int mid = (from + to) / 2;
-
-        if(ANALYZE){
-            printAnalyzedArray(a, from, mid, to); // Prints all the array the function creates
+    //TODO Optionnal additionnal method
+    public static void mergeSort(int[] a, int low, int high) {
+        if (high > low) {
+            int mid = (low + high) / 2;
+            if (ANALYZE) printlnAnalyzedArray(a, low, mid, high);
+            mergeSort(a, low, mid);
+            mergeSort(a, mid + 1, high);
+            merge(a, new int[high - low + 1], low, mid, high);
         }
-
-        mergeSort(from, mid, a);
-        mergeSort(mid, to, a);
-
-        int[] aux = new int[to - from];
-        merge(a, aux, from, mid, to);
     }
 
-    static void printAnalyzedArray(int[] tab, int l, int m, int h) {
-        System.out.print("[");
-        System.out.print(tab[l]);
-        for (int i = l + 1; i < m; i++) {
-            System.out.print(", " + tab[i]);
-        }
-        System.out.print("; " + tab[m]); // ";" mark where the array will be split
-
-        for (int i = m + 1; i < h; i++) {
-            System.out.print(", " + tab[i]);
+    private static void printlnAnalyzedArray(int[] a, int from, int mid, int hi) {
+        System.out.print("[" + a[from]);
+        for (int i = from + 1; i <= hi; i++) {
+            if (i != mid + 1) {
+                System.out.print(", " + a[i]);
+            } else
+                System.out.print("; " + a[i]);
         }
         System.out.println("]");
     }
 
-    static void printSubArray(int[] tab, int from, int to) {
-        System.out.print("[" + tab[from]);
-        for (int i = from + 1; i < to; i++) {
-            System.out.print(", " + tab[i]);
+    private static void printSubArray(int[] a, int from, int to) {
+        System.out.print("[" + a[from]);
+        for (int i = from + 1; i <= to; i++) {
+            System.out.print(", " + a[i]);
         }
         System.out.print("]");
     }
+
 }
