@@ -15,10 +15,7 @@ public class MyStack<E> {
      * push an element at top (remember, a stack is "Last In First Out")
      */
     public void push(E elem) {
-        queue.add(elem);
-        for (int i = 0; i < queue.size()-1; i++) {
-            queue.add(queue.remove());
-        }
+        queue.add(0, elem);
     }
 
     /*
