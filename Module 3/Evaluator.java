@@ -6,7 +6,7 @@ import java.util.function.Function;
 public class Evaluator {
 
     public BiFunction<Boolean, Boolean, Boolean> xor_gate() {
-         return (a, b) -> a != b;
+         return (a, b) -> a^b; // a^b is equivalent to a != b in this case
     }
 
     public BiFunction<Boolean, Boolean, Boolean> or_gate() {
