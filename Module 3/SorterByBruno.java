@@ -1,8 +1,7 @@
 import java.util.List;
 import java.awt.Color;
 
-public class Sorter {
-
+public class SorterByBruno {
 
     /*
      * Should sort the list and order the Flower by color, in this specific order : red, blue, green
