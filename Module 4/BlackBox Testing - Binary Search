@@ -28,6 +28,6 @@ public class TestSuite {
         assertEquals(-2, Exercise.binarySearch(a, 3, 0, 1)); // low > high
         assertEquals(-1, Exercise.binarySearch(a, 0, 3, -5)); // Not found
         assertEquals( 2, Exercise.binarySearch(a, 1, 3, 2)); // Found
-        assertEquals(1, Exercise.binarySearch(null, 0, 3, 2)); // null array
+        assertEquals( -2, Exercise.binarySearch(null, 0, 3, 2)); // null array
     }
 }
