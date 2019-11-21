@@ -2,7 +2,7 @@ import java.util.Comparator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class Test {
+public class LambdaExpression {
     
     public static void main(String[] args) {
         if (f1.apply(5) != 7) printError("f1");
