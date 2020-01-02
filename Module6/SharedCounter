@@ -1,0 +1,28 @@
+public class SharedCounter {
+
+    private int counter = 0;
+
+    // Increment once the counter
+    public synchronized void inc() {
+        counter++;
+        notify();
+    }
+
+    // Decrement the counter if and only if its current value is positive.
+    // In fact, the counter we ask you to implement must always be positive.
+    // If a thread wants to decrement the counter but its value is 0, it has to wait.
+    public synchronized void dec() {
+        try {
+            while (counter == 0) wait();
+        } catch (InterruptedException e) {
+        }
+        counter--;
+        notify();
+    }
+
+    // Returns the current value of the counter.
+    public synchronized int get() {
+        return counter;
+    }
+
+}
