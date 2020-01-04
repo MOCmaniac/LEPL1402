@@ -1,0 +1,20 @@
+CTRL+Q  : Ouvre une fenêtre de documentation sur la fonction, l'objet ou je ne sais quoi sur lequel se trouve votre curseur.
+Pour une fonction d'une classe Java, ça montre la doc de l'API ! Donc celui-là tu le connais ou tu bisses
+
+MAJ+F6  : Renome TOUTES les occurences d'une variable dans votre code
+CTRL+ALT+L  : Reformat votre code (indentation)
+SHIFT+F10/F9  : Run, permet de faire tourner/débugger le dernier programme que vous avez fait tourner (même si vous travaillez dans une autre fenêtre)
+CTRL+SHIFT+F10  : Run, permet de faire tourner le programme de la fenêtre dans laquelle vous travaillez (si il y a un truc à faire tourner)
+CTRL+FORWARDSLASH : Met ou retire chaque ligne que vous avez sélectionnés en commentaire (// En commentaire)
+CTRL+SHIFT+FORWARDSLASH : Met ou retire les lignes que vous avez sélectionnés en commentaire (/* En commenatire */)
+
+/!\ Pour les deux méthodes qui suivent, vous devez vous trouver dans une partie de code où la fonction a un sens
+Vous ne pouvez pas créer une main dans une autre fonction par exemple.
+"sout"+TAB  : Ecris la méthode "System.out.println();" en entier pour vous
+"main"+TAB" ou "psvm"+TAB  : Ecris la méthode "public static void main(String[] args) {}" pour vous
+
+CTRL+SHIFT+ENTER  : Ajoute un point-virgule à la fin de votre ligne SI il n'y en a pas.
+CTRL+Z  : Undo, permet d'annuler l'action que vous venez de faire
+
+Recueil de tous les raccourcis pour Windows, Linux et les autres
+https://resources.jetbrains.com/storage/products/intellij-idea/docs/IntelliJIDEA_ReferenceCard.pdf
