@@ -17,16 +17,16 @@ public class StudentFunctions implements StudentStreamFunction {
             studentsStream = studentsStream.filter(std -> firstNameTest.test(std.getFirstName()));
         }
         if(conditions.containsKey("lastName")){
-            Predicate<String> firstNameTest = (Predicate<String>) conditions.get("lastName");
-            studentsStream = studentsStream.filter(std -> firstNameTest.test(std.getLastName()));
+            Predicate<String> lastNameTest = (Predicate<String>) conditions.get("lastName");
+            studentsStream = studentsStream.filter(std -> lastNameTest.test(std.getLastName()));
         }
         if(conditions.containsKey("section")){
-            Predicate<Integer> firstNameTest = (Predicate<Integer>) conditions.get("section");
-            studentsStream = studentsStream.filter(std -> firstNameTest.test(std.getSection()));
+            Predicate<Integer> sectionTest = (Predicate<Integer>) conditions.get("section");
+            studentsStream = studentsStream.filter(std -> sectionTest.test(std.getSection()));
         }
         if(conditions.containsKey("courses_results")){
-            Predicate<Map<String, Double>> firstNameTest = (Predicate<Map<String, Double>>) conditions.get("courses_results");
-            studentsStream = studentsStream.filter(std -> firstNameTest.test(std.getCourses_results()));
+            Predicate<Map<String, Double>> sectionTest = (Predicate<Map<String, Double>>) conditions.get("courses_results");
+            studentsStream = studentsStream.filter(std -> sectionTest.test(std.getCourses_results()));
         }
 
         return studentsStream.toArray(Student[]::new);
