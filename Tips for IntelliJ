@@ -1,5 +1,13 @@
+LES DEUX RACCOURCIS SUIVANTS SONT HYPER IMPORTANTS !
+
 CTRL+Q  : Ouvre une fenêtre de documentation sur la fonction, l'objet ou je ne sais quoi sur lequel se trouve votre curseur.
 Pour une fonction d'une classe Java, ça montre la doc de l'API ! Donc celui-là tu le connais ou tu bisses
+
+Ctrl+B ou Ctrl+Click  : Va à la déclaration. Pour une méthode ou une classe Java, ce raccourcis ouvre l'endroit où elle
+est déclarée. Par exemple : "System.out.println(Arrays.toString(test));" Si vous exécutez le raccourcis sur "Arrays" ou "toString",
+l'IDE va ouvrir la classe Arrays.java (qui au passage fait 8928 lignes). Sinon, il vous emmenène à l'endroit de la déclaration
+de l'objet sur lequel vous cliquez.
+
 
 MAJ+F6  : Renome TOUTES les occurences d'une variable dans votre code
 CTRL+ALT+L  : Reformat votre code (indentation)
