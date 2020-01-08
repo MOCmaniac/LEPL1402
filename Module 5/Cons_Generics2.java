@@ -13,8 +13,7 @@ public class Cons<E> {
     }
 
     public <R> Cons <R> map(Function <E,R> function) {
-      E mappedValue = (E) function.apply(this.v);
-      Cons mappedCons = new Cons(mappedValue, null);
+      Cons<R> mappedCons = new Cons<R>(function.apply(this.v), null);
       if(this.next != null) {
           mappedCons.next = this.next.map(function);
       }
