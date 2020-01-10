@@ -1,4 +1,6 @@
-LES DEUX RACCOURCIS SUIVANTS SONT HYPER IMPORTANTS !
+LES TROIS RACCOURCIS SUIVANTS SONT HYPER IMPORTANTS !
+
+ALT+ENTER  : Lorsque le curseur est sur une erreur soulignée en rouge, IntelliJ ouvre un dialogue proposant des solutions au problème.
 
 CTRL+Q  : Ouvre une fenêtre de documentation sur la fonction, l'objet ou je ne sais quoi sur lequel se trouve votre curseur.
 Pour une fonction d'une classe Java, ça montre la doc de l'API ! Donc celui-là tu le connais ou tu bisses
