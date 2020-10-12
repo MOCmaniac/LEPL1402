@@ -8,13 +8,10 @@ public class Sieve {
     public static BitSet bits; //You should work on this BitSet
 
     public static int numberOfPrime2(int n) {
-        // This method isn't as efficient as numberOfPrime (need less changes in the BitSet)
+        // This method is faster than numberOfPrime
         bits = new BitSet(n); // Creates a bit set whose initial size = n (all values set to false)
-        for (int a = 0; a < n; a++) {
-            bits.set(a, true);
-        }
 
-        bits.flip(0, 2); // 0 and 1 are not pair (flip from false to true)
+        bits.flip(2, n); // 0 and 1 are not pair (flip all values except 0 and 1 from false to true )
 
         for (int i = 2; i <= Math.sqrt(n); i++) {
             if (bits.get(i)) {
