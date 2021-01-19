@@ -20,18 +20,18 @@ public class Cons {
 
     // creates a new Cons with all elements that matches predicate p
     public Cons filter(P p) {
-        Cons filtered = new Cons(0, null);
-        Cons head = this;
-        while(head != null){
-            if(p.filter(head.v)){
-                filtered.v = head.v;
-                if(head.next != null){
-                    filtered.next = head.next.filter(p);
-                }
-                return filtered;
+        if(this.next != null){      // if next not null, to avoid nullPointerException
+            if(p.filter(this.v)){   // if the value passes the filter
+                return new Cons(this.v, this.next.filter(p));   // adds a Cons with its value and tries to filter the next one (recursion)
+            } else {
+                return this.next.filter(p); // does not adds his value and tries to filter the nexi one (recursion)
             }
-            head = head.next;
-        }
-        return null;
+        } else {                    // only if this is the last Cons of the original array
+            if (p.filter(this.v)) { // if the value passes the filter
+                return new Cons(this.v, null); // adds his value and returns null as next (no next to filter)
+            } else {
+                return null;    // returns null
+            }
+        } 
     }
 }
