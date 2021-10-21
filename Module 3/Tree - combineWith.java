@@ -1,3 +1,5 @@
+// Solution by Martin Gyselinck
+
 public class Tree {
 
     public Node root;

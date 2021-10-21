@@ -112,6 +112,7 @@ public class Valley {
     }
 	
 	/*
+	* // Solution by Martin Gyselinck
     * On va parcourir la liste UNE SEULE FOIS, et stocker son status en temps réel dans l'array status.
     * En initialisant, on setup le statut sur la premiere slope de l'array que l'on reçoit en entrée,
     * afin de ne pas avoir à gérer le cas plus tard
