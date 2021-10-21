@@ -110,4 +110,41 @@ public class Valley {
         }
         return ans;
     }
+	
+	/*
+    * On va parcourir la liste UNE SEULE FOIS, et stocker son status en temps réel dans l'array status.
+    * En initialisant, on setup le statut sur la premiere slope de l'array que l'on reçoit en entrée,
+    * afin de ne pas avoir à gérer le cas plus tard
+    * À chaque étape, on regarde si la pente est toujours la même que celle stockée dans le status, et on la change au besoin,
+    * puis on incrémente la succession de montée / descente correspondante dans l'array status.
+    * Ensuite, on vérifie si, en fonction de si on est sur une montée ou une descente,
+    * on obtient une vallée / montagne plus grande que celles déjà obtenues.
+     */
+    public static int[] valleyOneLoop (int[] slopes){
+        int[] result = new int[2];
+        int[] status = {slopes[0], 0, 0, slopes[0]};
+        // {-1 : valley, 1: mountain; last sucession neg; last succession pos; current searched (-1 pente, 1 montée)}
+        for (int i: slopes) {
+            if (status[3] == i) { // Si la pente/ montée continue
+                if (i == -1)
+                    status[1] += 1; // Incrémente la valeur de la pente
+                else
+                    status[2] += 1; // Incrémente la valeur de la montée
+            } else {
+                status[3] = i; // Si la pente / montée change
+                if (i == -1) {
+                    status[1] = 1; // reset de la valeur de la dernière pente, vu que je commence à descendre
+                    status[0] = 1; // je regarde maintenant pour une fin de montagne (on la descend)
+                } else {
+                    status[2] = 1; // reset de la valeur de la dernière montée, vu que je commence à monter
+                    status[0] = -1; // je regarde maintenant pour une fin de vallée (on la monte)
+                }
+            }
+            if (status[0] == -1)
+                result[0] = Math.max(result[0], Math.min(status[1], status[2]));
+            else
+                result[1] = Math.max(result[1], Math.min(status[1], status[2]));
+        }
+        return result;
+    }
 }
