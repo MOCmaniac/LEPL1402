@@ -21,19 +21,18 @@ public class Cons<E> {
     }
 
     public Cons <E> filter(Predicate <E> predicate) {
-        Cons filtered = new Cons(null, null);
-        Cons head = this;
-        while(head != null){
-            E headValue = (E) head.v;
-            if(predicate.test(headValue)){
-                filtered.v = head.v;
-                if(head.next != null){
-                    filtered.next = head.next.filter(predicate);
-                }
-                return filtered;
+        if(this.next != null){  // if next not null, to avoid nullPointerException
+            if(predicate.test((E)this.v)){  // if the value passes the filter
+                return new Cons<>(this.v, this.next.filter(predicate));  // adds a Cons with its value and tries to filter the next one (recursion)
+            } else {
+                return this.next.filter(predicate);  // does not adds his value and tries to filter the next one (recursion)
             }
-            head = head.next;
+        } else {  // only if this is the last Cons of the original array
+            if (predicate.test((E)this.v)) {  // if the value passes the filter
+                return new Cons(this.v, null);  // adds his value and returns null as next (no next to filter)
+            } else {
+                return null;  // does not pass the filter, so only returns null
+            }
         }
-        return null;
     } 
 }
