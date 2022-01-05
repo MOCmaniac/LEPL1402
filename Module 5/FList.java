@@ -3,8 +3,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public abstract class FList<A> implements Iterable<A> {
-
+abstract class FList<A> implements Iterable<A> {
     /**
      * Returns an empty FList
      */
@@ -13,14 +12,14 @@ public abstract class FList<A> implements Iterable<A> {
     }
 
     /**
-     * Creates a new list with a prepended to this list
+     * Returns a new FList obtained by prepending a to this list
      */
     public final FList<A> cons(final A a) {
         return new Cons(a, this);
     }
 
     /**
-     * @return the number of elements in the list
+     * @return the number of elements in this list
      */
     public abstract int length();
 
@@ -31,38 +30,38 @@ public abstract class FList<A> implements Iterable<A> {
 
     /**
      * @return the head of the list.
-     * Throws NoSuchElementException if the list is empty
+     * @throws NoSuchElementException if the list is empty
      */
     public abstract A head();
 
     /**
      * @return the tail of the list (i.e. the sublist without the first element of this list)
-     * Throws NoSuchElementException if the list is empty
+     * @throws NoSuchElementException if the list is empty
      */
     public abstract FList<A> tail();
 
     /**
-     * Returns a new list with the output of the function f applied to each element of this list
+     * Returns a new list containing the outputs obtained by applying function f to each element of this list
      */
-    public abstract <B> FList<B> map(Function<A, B> f);
+    public abstract <B> FList<B> map(Function<A,B> f);
 
     /**
-     * Creates a new list with only the element that fullfill the predicate f (i.e. f(elem) == true).
+     * Returns a new list containing only the elements from this list that fullfill predicate f (i.e. f(elem) == true)
      */
     public abstract FList<A> filter(Predicate<A> f);
 
 
     public Iterator<A> iterator() {
-        return new Iterator<A>() {
-            private FList<A> list = FList.this;
 
+        return new Iterator<A>() {
+            FList<A> list = FList.this;
             public boolean hasNext() {
-                return list.length() > 0;
+                return !list.isEmpty();
             }
 
             public A next() {
-                if (list.length() == 0) {
-                    throw new NoSuchElementException("List is empty");
+                if (list.isEmpty()){
+                    throw new NoSuchElementException("La liste est vide");
                 }
                 A next = list.head();
                 list = list.tail();
@@ -75,9 +74,8 @@ public abstract class FList<A> implements Iterable<A> {
         };
     }
 
-
     private static final class Nil<A> extends FList<A> {
-        public static final Nil<Object> INSTANCE = new Nil();
+        public static final Nil<Object> INSTANCE = new Nil<>();
 
         @Override
         public int length() {
@@ -91,54 +89,48 @@ public abstract class FList<A> implements Iterable<A> {
 
         @Override
         public A head() {
-            throw new NoSuchElementException("List is empty");
+            throw new NoSuchElementException();
         }
 
         @Override
         public FList<A> tail() {
-            throw new NoSuchElementException("List is empty");
+            throw new NoSuchElementException();
         }
 
         @Override
         public <B> FList<B> map(Function<A, B> f) {
-            return new Nil<B>();
+            return nil();
         }
 
         @Override
         public FList<A> filter(Predicate<A> f) {
-            return new Nil<A>();
+            return nil();
         }
-
+        // TODO
     }
 
     private static final class Cons<A> extends FList<A> {
-        private A value;
-        private FList<A> next;
+        public final A v;
+        public final FList<A> next;
 
-        public Cons(A value, FList<A> next) {
-            this.value = value;
+        public Cons(A val, FList<A> next) {
+            this.v = val;
             this.next = next;
         }
 
         @Override
         public int length() {
-            int length = 1;
-            Cons<A> head = this;
-            while (!head.next.isEmpty()) {
-                length++;
-                head = (Cons<A>) head.next;
-            }
-            return length;
+            return this.next.length() + 1;
         }
 
         @Override
         public boolean isEmpty() {
-            return false; // if empty -> Nil
+            return false;
         }
 
         @Override
         public A head() {
-            return this.value;
+            return this.v;
         }
 
         @Override
@@ -148,31 +140,16 @@ public abstract class FList<A> implements Iterable<A> {
 
         @Override
         public <B> FList<B> map(Function<A, B> f) {
-            Cons<B> newFlist = new Cons<B>(f.apply(this.value), FList.nil());
-            newFlist.next = this.next.map(f);
-            return newFlist;
+            return new Cons<>(f.apply(v), this.next.map(f));
         }
 
         @Override
-        public FList<A> filter(Predicate<A> f) { // Provided tests did not work well
-            Cons<A> newFlist = new Cons<A>(this.value, FList.nil());
-            Cons<A> current = this;
-            boolean finished = false;
-            while(!finished) {
-                if (f.test(current.value)) {
-                    newFlist.value = current.value;
-                    if (!current.next.isEmpty()) {
-                        newFlist.next = current.next.filter(f);
-                    }
-                    return newFlist;
-                } else if (!current.next.isEmpty()) {
-                    current = (Cons<A>) current.next;
-                } else {
-                    finished = true;
-                }
+        public FList<A> filter(Predicate<A> f) {
+            if (f.test(v)) {
+                return new Cons<>(v, this.next.filter(f));
             }
-            return FList.nil();
+            return this.next.filter(f);
         }
-    }
 
+    }
 }
