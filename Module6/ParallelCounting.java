@@ -1,41 +1,40 @@
-import java.sql.Array;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
+
 
 /**
- *  You can ADD any code you like in this class (new members, new methods, etc.).
- *  You can also add imports.
+ * Ce code passe les tests inginious mais pas le test local 3 ...
  */
-
-
-//Seulement 83.33%, besoin d'amélioration
-
 public class ParallelCounting {
 
-    public static int search(int min, int max, float[] array, float v){
-        int counter = 0;
-
-        for (int i = min; i < max ; i++) {
-            if (array[i] == v){
-                counter++;
-            }
-        }
-
-
-        return counter;
+    private static float[][] subDivide(ArrayList<float[]> values, int t) {
+        if(t==1) return values.toArray(new float[0][]);
+        float[] vs = values.get(values.size()-1);
+        int out;
+        if (vs.length%t != 0) out = (vs.length / t) + 1;
+        else out = (vs.length / t);
+        values.add(0,Arrays.copyOfRange(vs,0,out));
+        values.set(values.size()-1,Arrays.copyOfRange(vs,out,vs.length));
+        t--;
+        return subDivide(values, t);
     }
+
+    private static int count(float[] arr, float v) {
+        int count = 0;
+        for (float f : arr) if (f==v) count++;
+        return count;
+    }
+
     /**
      * Return the number of values equal to v using a parallel algorithm.
      *
-     * @param values an array of numbers
+     * @param oValues an array of numbers
      * @param v the value that you want to count
-     * @param nThreads is a value between 1 and values.length
+     * @param nThreads is a value between 1 and length of values
      * @return the number of elements equal to v in values (or 0 if no values are provided)
-     *
      * Example: For
      *     values = [4.5f,3.2f,5.0f,6.6f,7.2f,1.5f,3.7f,5.8f,6.0f,9.0f,1.3f,2.3f,4.5f,1.5f]
      * and
@@ -44,72 +43,23 @@ public class ParallelCounting {
      *
      * Try to give all threads more or less the same amount of work!
      */
-    public static int parallelCount (Optional<float[]> values, float v, int nThreads) {
+    public static int parallelCount (Optional<float[]> oValues, float v, int nThreads) {
+        if (!oValues.isPresent()) return 0;
+        float[][] values = subDivide(new ArrayList<float[]>(Collections.singleton(oValues.get())), nThreads);
+        ExecutorService executor = Executors.newFixedThreadPool(nThreads);
+        List<Future<Integer>> futures = new ArrayList<>();
+        for (float[] arr : values) futures.add(executor.submit(() -> count(arr, v)));
 
-
-
-        List<float[]> toList = values.map(Collections::singletonList).orElseGet(Collections::emptyList);
-
-
-
-        if (toList.size() == 0){
-            return 0;
-        } else {
-
-            int valuesLength = toList.get(0).length;
-            int threadTaskLength = valuesLength/nThreads;
-
-            int min = 0;
-            int max = threadTaskLength;
-
-            ExecutorService executor = Executors.newFixedThreadPool(nThreads);
-
-            Future<Integer>[] array = new Future[nThreads];
-
-            int counter = 0;
-
-
-            for (int i = 0; i < nThreads; i++) {
-                int temp = i;
-                Future<Integer> future = executor.submit( () -> search(temp*max,(temp+1)*max,toList.get(0),v) );
-
-                array[i] = future;
-
+        Integer counter = 0;
+        for (Future<Integer> f: futures) {
+            try {
+                counter += f.get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
             }
-
-
-            for (int i = 0; i < nThreads; i++) {
-
-                int result = 0;
-                try {
-                    result = array[i].get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-
-                counter += result;
-
-            }
-
-            executor.shutdown();
-
-
-
-
-
-            return counter;
-
         }
 
-
-
-
-
+        executor.shutdown();
+        return counter;
     }
-
-
 }
-
-
